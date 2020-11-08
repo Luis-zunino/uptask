@@ -67,7 +67,4 @@ include "inc/templates/header.php"; ?>
 </div><!--.contenedor-->
 
 
-<script src="js/sweetalert2.all.min.js"></script>
-
-
 <?php include "inc/templates/footer.php"; ?>
