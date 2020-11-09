@@ -40,6 +40,10 @@ if ($accion === "crear") {
                 "id_insertado" => $stmt->insert_id,
                 "tipo" => $accion
             );
+        }else{
+            $respuesta = array (
+                "respuesta"=>"error"
+            );
         }
 
 
