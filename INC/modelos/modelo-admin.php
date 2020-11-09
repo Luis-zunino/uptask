@@ -40,9 +40,9 @@ if ($accion === "crear") {
                 "id_insertado" => $stmt->insert_id,
                 "tipo" => $accion
             );
-        }else{
-            $respuesta = array (
-                "respuesta"=>"error"
+        } else {
+            $respuesta = array(
+                "respuesta" => "error"
             );
         }
 
@@ -60,4 +60,36 @@ if ($accion === "crear") {
 
 if ($accion === "login") {
     //escribir codigo que loguee a los administradores
+    include "../funciones/coneccion.php";
+    try {
+        //seleccionar el administrador de la base de datos
+        $stmt = $conn->prepare("SELECT usuario, id, password FROM usuarios WHERE usuario = ?");
+        $stmt->bind_param("s", $usuario);
+        $stmt->execute();
+        //Loguear el usuario
+        $stmt->bind_result($nombre_usuario, $id_usuario, $password_usuario);
+        $stmt->fetch();
+        if($nombre_usuario){
+            $respuesta= array(
+                "respuesta"=>"correcto",
+                "nombre"=>$nombre_usuario,
+                "id"=>$id_usuario,
+                "pass"=>$password_usuario
+            );
+        }else{
+            $respuesta = array(
+                "error"=>"usuario no existe"
+            );
+        }
+           
+        
+        $stmt->close();
+        $conn->close();
+    } catch (\Exception $e) {
+        //en caso de un error, tomar la exepcion
+        $respuesta = array(
+            "pass" => $e->getMessage()
+        );
+    }
+    echo json_encode($respuesta);
 }

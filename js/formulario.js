@@ -35,6 +35,7 @@ function validarRegistro(e) {
         xhr.onload = function () {
             if (this.status === 200) {
                 var respuesta = JSON.parse(xhr.responseText);
+                console.log(respuesta);
                 //si la repsuetsa es correcta
                 if (respuesta.respuesta === "correcto") {
                     //si es un nuevo usuario
@@ -44,7 +45,9 @@ function validarRegistro(e) {
                             text: "El usuario se creó correctamente",
                             icon: "success"
                         });
-                    }
+                    }/*else if(respuesta.tipo === "login"){
+
+                    }*/
                 } else {
                     //hubo un error
                     Swal.fire({
