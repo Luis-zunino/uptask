@@ -11,7 +11,7 @@ function validarRegistro(e) {
     var usuario = document.querySelector("#usuario").value,
         password = document.querySelector("#password").value,
         tipo = document.querySelector("#tipo").value;
-    console.log(usuario + " " + password);
+    //console.log(usuario + " " + password);
 
     if (usuario === "" || password === "") {
         //la validacion fallo
@@ -39,7 +39,7 @@ function validarRegistro(e) {
         //retorno de datos
         xhr.onload = function(){
             if(this.status === 200){
-                console.log(xhr.responseText);
+                console.log(JSON.parse(xhr.responseText));
             }
         }
         //enviar la peticion
