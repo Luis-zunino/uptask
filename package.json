@@ -1,0 +1,22 @@
+{
+  "name": "uptask",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luis-zunino/uptask.git"
+  },
+  "author": "Luis Zunino",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Luis-zunino/uptask/issues"
+  },
+  "homepage": "https://github.com/Luis-zunino/uptask#readme",
+  "dependencies": {
+    "sweetalert2": "^10.9.1"
+  }
+}
