@@ -8,7 +8,17 @@ function eventListeners() {
 function validarRegistro(e) {
     e.preventDefault();
 
-    console.log("aqui vamos");
-}
+    var usuario = document.querySelector("#usuario").value,
+        password = document.querySelector("#password").value;
+    console.log(usuario + " " + password);
 
-console.log("aqui");
+    if (usuario === "" || password === "") {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Ambos campos son obligatorios!',
+        })
+    }
+
+}
