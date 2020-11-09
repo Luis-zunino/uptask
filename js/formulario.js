@@ -13,11 +13,16 @@ function validarRegistro(e) {
     console.log(usuario + " " + password);
 
     if (usuario === "" || password === "") {
-
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'Ambos campos son obligatorios!',
+        })
+    } else {
+        Swal.fire({
+            icon: 'success',
+            title: 'Correcto',
+            text: 'Ingreso correcto!'
         })
     }
 
