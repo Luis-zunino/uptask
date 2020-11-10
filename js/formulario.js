@@ -45,9 +45,18 @@ function validarRegistro(e) {
                             text: "El usuario se creó correctamente",
                             icon: "success"
                         });
-                    }/*else if(respuesta.tipo === "login"){
-
-                    }*/
+                    } else if (respuesta.tipo === "login") {
+                        Swal.fire({
+                                title: "Login correcto",
+                                text: "Presiona OK para abrir el dashboard",
+                                icon: "success"
+                            })
+                            .then(resultado => {
+                                if (resultado.value) {
+                                    window.location.href = "index.php";
+                                }
+                            })
+                    }
                 } else {
                     //hubo un error
                     Swal.fire({

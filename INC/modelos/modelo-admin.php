@@ -13,83 +13,95 @@ un formato intermedio entre javascript y php que se comunican bien ambos,
 
 /**die(json_encode($_POST)); es la forma recomendada de asegurarte de que tus 
 datos del formdata estan siendo recibidos en tus archivos de php */
-$accion = $_POST["accion"];
-$password = $_POST["password"];
-$usuario = $_POST["usuario"];
+$accion = $_POST['accion'];
+$password = $_POST['password'];
+$usuario = $_POST['usuario'];
 
-if ($accion === "crear") {
+if ($accion === 'crear') {
     //codigo para crear los administradores
 
     //hashear passwords
     $opciones = array(
-        "cost" => 12
+        'cost' => 12
     );
     $hash_password = password_hash($password, PASSWORD_BCRYPT, $opciones);
     //importar la conexion
-    include "../funciones/coneccion.php";
+    include '../funciones/coneccion.php';
+
     try {
         //realizar la consula a la base de datos
-        $stmt = $conn->prepare(" INSERT INTO usuarios (usuario, password) VALUES (?, ?) ");
-        $stmt->bind_param("ss", $usuario, $hash_password);
+        $stmt = $conn->prepare("INSERT INTO usuarios (usuario, password) VALUES (?, ?) ");
+        $stmt->bind_param('ss', $usuario, $hash_password);
         $stmt->execute();
         if ($stmt->affected_rows) {
             /**en vez de ponerle afffected_rows pongo error list me indica que 
              *tipo de error es ademas le agrego "error" => $stmt->error*/
             $respuesta = array(
-                "respuesta" => "correcto",
-                "id_insertado" => $stmt->insert_id,
-                "tipo" => $accion
+                'respuesta' => 'correcto',
+                'id_insertado' => $stmt->insert_id,
+                'tipo' => $accion
             );
         } else {
             $respuesta = array(
-                "respuesta" => "error"
+                'respuesta' => 'error'
             );
         }
-
-
         $stmt->close();
         $conn->close();
-    } catch (\Exception $e) {
-        //en caso de un error, tomar la exepcion
+    } catch (Exception $e) {
+        // En caso de un error, tomar la exepcion
         $respuesta = array(
-            "pass" => $e->getMessage()
+            'error' => $e->getMessage()
         );
     }
     echo json_encode($respuesta);
 }
 
-if ($accion === "login") {
+if ($accion === 'login') {
     //escribir codigo que loguee a los administradores
-    include "../funciones/coneccion.php";
+    include '../funciones/coneccion.php';
+
     try {
-        //seleccionar el administrador de la base de datos
+        // Seleccionar el administrador de la base de datos
         $stmt = $conn->prepare("SELECT usuario, id, password FROM usuarios WHERE usuario = ?");
-        $stmt->bind_param("s", $usuario);
+        $stmt->bind_param('s', $usuario);
         $stmt->execute();
-        //Loguear el usuario
-        $stmt->bind_result($nombre_usuario, $id_usuario, $password_usuario);
+        // Loguear el usuario
+        $stmt->bind_result($nombre_usuario, $id_usuario, $pass_usuario);
         $stmt->fetch();
-        if($nombre_usuario){
-            $respuesta= array(
-                "respuesta"=>"correcto",
-                "nombre"=>$nombre_usuario,
-                "id"=>$id_usuario,
-                "pass"=>$password_usuario
-            );
-        }else{
+        if ($nombre_usuario) {
+            // El usuario existe, verificar el password
+            if (password_verify($password, $pass_usuario)) {
+                // Iniciar la sesion
+                /*session_start();
+                $_SESSION['nombre'] = $usuario;
+                $_SESSION['id'] = $id_usuario;
+                $_SESSION['login'] = true;*/
+                // Login correcto
+                $respuesta = array(
+                    'respuesta' => 'correcto',
+                    'nombre' => $nombre_usuario,
+                    'tipo' => $accion
+                );
+            } else {
+                // Login incorrecto, enviar error
+                $respuesta = array(
+                    'resultado' => 'Password Incorrecto'
+                );
+            }
+        } else {
             $respuesta = array(
-                "error"=>"usuario no existe"
+                'error' => 'Usuario no existe'
             );
         }
-           
-        
         $stmt->close();
         $conn->close();
-    } catch (\Exception $e) {
-        //en caso de un error, tomar la exepcion
+    } catch (Exception $e) {
+        // En caso de un error, tomar la exepcion
         $respuesta = array(
-            "pass" => $e->getMessage()
+            'pass' => $e->getMessage()
         );
     }
+
     echo json_encode($respuesta);
 }
