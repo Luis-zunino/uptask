@@ -5,6 +5,8 @@ a lo que la funcion obtenerPaginaActual retorna un valor vamos a asignarlo a $ac
 $actual = obtenerPaginaActual();
 if ($actual === "crear-cuenta" || $actual === "login") {
     echo '<script src="js/formulario.js"></script>';
+}else{
+    echo '<script src="js/scripts.js"></script>';
 }
 ?>
 
