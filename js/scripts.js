@@ -51,7 +51,7 @@ function guardarProyectoDB(nombreProyecto) {
             //obtener/leer datos de la respesta
             var respuesta = JSON.parse(xhr.responseText); /*esto me va a dar acceso a las variables id_insertado nombre_proyecto, respuesta, tipo*/
             var proyecto = respuesta.nombre_proyecto,
-                id_proyecto = respuesta.id_proyecto,
+                id_proyecto = respuesta.id_insertado,
                 tipo = respuesta.tipo,
                 resultado = respuesta.respuesta;
             //comprobar la insercion
@@ -63,8 +63,8 @@ function guardarProyectoDB(nombreProyecto) {
                     //inyectar en el HTML
                     var nuevoProyecto = document.createElement("li");
                     nuevoProyecto.innerHTML = `
-                    <a href="inde.php?id_respuesta${id_proyecto}" id="${id_proyecto}">
-                    ${proyecto};
+                    <a href="index.php?id_respuesta${id_proyecto}" id="${id_proyecto}">
+                    ${proyecto}
                     </a>
                     `;
                     /* se enlaza a index.php le agrega un query string
@@ -73,14 +73,21 @@ function guardarProyectoDB(nombreProyecto) {
                      en el id
                      id_respuesta es un parametro*/
 
-                     //agregar al HTML
-                     listaProyectos.appendChild(nuevoProyecto);
-                     //enviar alerta
-                     Swal.fire({
-                        title: "Proyecto Creado",
-                        text: 'El proyecto: ' + proyecto + ' se creó correctamente',
-                        icon: "success"
-                    });
+                    //agregar al HTML
+                    listaProyectos.appendChild(nuevoProyecto);
+                    //enviar alerta
+                    Swal.fire({
+                            title: "Proyecto Creado",
+                            text: 'El proyecto: ' + proyecto + ' se creó correctamente',
+                            icon: "success"
+                        })
+                        .then(resultado => {
+                            //redireccionar a la nueva URL
+
+                            if (resultado.value) {
+                                window.location.href = "index.php?id_proyecto=" + id_proyecto;
+                            }
+                        })
                 } else {
                     //se actualizo o se elimino el proyecto
 
