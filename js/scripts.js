@@ -6,6 +6,9 @@ function eventListeners() {
     //boton para crear proyecto
     document.querySelector(".crear-proyecto a").addEventListener("click", nuevoProyecto);
 }
+//Boton para una nueva tarea
+
+document.querySelector(".nueva-tarea").addEventListener("click", agregarTarea);
 
 function nuevoProyecto(e) {
     e.preventDefault();
@@ -105,4 +108,24 @@ function guardarProyectoDB(nombreProyecto) {
     }
     //enviar el request
     xhr.send(datos);
+}
+
+//agregar una nueva tarea al proyecto actual
+function agregarTarea(e) {
+    e.preventDefault();
+    console.log("Click en el enviar");
+    var nombreTarea = document.querySelector(".nombre-tarea").value;
+    //validar que el campo tenga algo escrito
+    if (nombreTarea === "") {
+        Swal.fire({
+            title: "Error",
+            text: "Una tarea no puede ir vacía",
+            icon: "error"
+        })
+    } else {
+        //la tarea tienen algo, insertar en PHP
+        
+
+
+    }
 }
