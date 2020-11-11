@@ -99,7 +99,7 @@ if ($accion === 'login') {
     } catch (Exception $e) {
         // En caso de un error, tomar la exepcion
         $respuesta = array(
-            'pass' => $e->getMessage()
+            'error' => $e->getMessage()
         );
     }
 
