@@ -34,7 +34,7 @@ if (isset($_GET["id_proyecto"])) {
                         <input type="text" placeholder="Nombre Tarea" class="nombre-tarea">
                     </div>
                     <div class="campo enviar">
-                        <input type="hidden" id="<?php echo $id_proyecto; ?>" value="id_proyecto">
+                        <input type="hidden" id="id_proyecto" value="<?php echo $id_proyecto; ?>">
                         <input type="submit" class="boton nueva-tarea" value="Agregar">
                     </div>
                 </form>
