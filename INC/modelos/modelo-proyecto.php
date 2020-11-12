@@ -12,7 +12,7 @@ if ($accion === 'crear') {
         $stmt = $conn->prepare("INSERT INTO proyectos (nombre) VALUES (?) ");
         $stmt->bind_param('s', $proyecto);
         $stmt->execute();
-        if ($stmt->affected_rows) {
+        if ($stmt->affected_rows > 0) {
             /**en vez de ponerle afffected_rows pongo error list me indica que 
              *tipo de error es ademas le agrego "error" => $stmt->error*/
             $respuesta = array(
