@@ -226,7 +226,32 @@ function accionesTareas(e) {
         }
     }
     if (e.target.classList.contains("fa-trash")) {
-        console.log("hiciste click en el icono de borrar");
+        Swal.fire({
+            title: '¿Estas seguro que deseas borrar?',
+            text: "No se podra revertir los cambios!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Si, borrar!',
+            cancelButtonText: 'Cancelar'
+
+          }).then((result) => {
+              if (result.value) {
+                  var tareaEliminar = e.target.parentElement.parentElement;
+                  //borrar de la BD
+
+                  //Borrar del HTML
+                  tareaEliminar.remove();
+              }
+            if (result.isConfirmed) {
+              Swal.fire(
+                'Eliminado!',
+                'La tarea fue eliminada correctamente.',
+                'success'
+              )
+            }
+          })
     }
 }
 // completa o descompleta la tarea
@@ -247,7 +272,7 @@ function cambiarEstadoTarea(tarea, estado) {
     xhr.onload = function () {
         if (this.status === 200) {
             console.log(JSON.parse(xhr.responseText));
-            
+
         }
     }
     //enviar la peticion

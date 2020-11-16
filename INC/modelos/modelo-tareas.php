@@ -2,8 +2,10 @@
 error_reporting(E_ALL ^ E_NOTICE);
 
 $accion = $_POST["accion"];
-$id_proyecto = (int) $_POST['id_proyecto'];
-$tarea = $_POST['tarea'];
+$id_proyecto = (int) $_POST["id_proyecto"];
+$tarea = $_POST["tarea"];
+$estado = $_POST["estado"];
+$id_tarea = (int) $_POST["id"];
 
 
 if ($accion === 'crear') {
@@ -40,5 +42,32 @@ if ($accion === 'crear') {
     echo json_encode($respuesta);
 }
 if ($accion === "actualizar") {
-    echo json_encode($_POST);
+    //importar la conexion
+    include '../funciones/coneccion.php';
+
+    try {
+        //realizar la consula a la base de datos
+        $stmt = $conn->prepare("UPDATE tareas SET estado = ? WHERE id = ?");
+        $stmt->bind_param('ii', $estado, $id_tarea);
+        $stmt->execute();
+        if ($stmt->affected_rows > 0) {
+            /**en vez de ponerle afffected_rows pongo error list me indica que 
+             *tipo de error es ademas le agrego "error" => $stmt->error*/
+            $respuesta = array(
+                'respuesta' => 'Correcta actualización',
+            );
+        } else {
+            $respuesta = array(
+                'respuesta' => 'Error al Actualizar'
+            );
+        }
+        $stmt->close();
+        $conn->close();
+    } catch (Exception $e) {
+        // En caso de un error, tomar la exepcion
+        $respuesta = array(
+            'error' => $e->getMessage()
+        );
+    }
+    echo json_encode($respuesta);
 }
