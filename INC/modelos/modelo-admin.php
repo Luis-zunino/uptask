@@ -33,7 +33,7 @@ if ($accion === 'crear') {
         $stmt = $conn->prepare("INSERT INTO usuarios (usuario, password) VALUES (?, ?) ");
         $stmt->bind_param('ss', $usuario, $hash_password);
         $stmt->execute();
-        if ($stmt->affected_rows) {
+        if ($stmt->affected_rows > 0) {
             /**en vez de ponerle afffected_rows pongo error list me indica que 
              *tipo de error es ademas le agrego "error" => $stmt->error*/
             $respuesta = array(
@@ -105,3 +105,4 @@ if ($accion === 'login') {
 
     echo json_encode($respuesta);
 }
+

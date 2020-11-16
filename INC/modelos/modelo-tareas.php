@@ -1,7 +1,9 @@
 <?php
+error_reporting(E_ALL ^ E_NOTICE);
+
 $accion = $_POST["accion"];
-$id_proyecto = (int) $_POST["id_proyecto"];
-$tarea = $_POST["tarea"];
+$id_proyecto = (int) $_POST['id_proyecto'];
+$tarea = $_POST['tarea'];
 
 
 if ($accion === 'crear') {
@@ -36,4 +38,7 @@ if ($accion === 'crear') {
         );
     }
     echo json_encode($respuesta);
+}
+if ($accion === "actualizar") {
+    echo json_encode($_POST);
 }
