@@ -3,10 +3,16 @@ eventListeners();
 var listaProyectos = document.querySelector("ul#proyectos");
 
 function eventListeners() {
+    //document ready
+    // document.addEventListener("DOMContentLoaded", function)
     //boton para crear proyecto
     document.querySelector(".crear-proyecto a").addEventListener("click", nuevoProyecto);
     //Boton para una nueva tarea
-    document.querySelector(".nueva-tarea").addEventListener("click", agregarTarea);
+    //document.querySelector(".nueva-tarea").addEventListener("click", agregarTarea);
+    // Boton para una nueva tarea
+    if (document.querySelector('.nueva-tarea') !== null) {
+        document.querySelector('.nueva-tarea').addEventListener('click', agregarTarea);
+    }
     //botones para las acciones de las tareas
     document.querySelector(".listado-pendientes").addEventListener("click", accionesTareas);
 
@@ -169,7 +175,11 @@ function agregarTarea(e) {
                         if (parrafoListaVacia.length > 0) {
                             document.querySelector('.lista-vacia').remove()
                         }
-
+                        // seleccionar el aprrafo con la lista vacia
+                        var parrafoListaVacia = document.querySelectorAll(".lista-vacia");
+                        if (parrafoListaVacia.length > 0) {
+                            document.querySelector(".lista-vacia").remove();
+                        }
                         // construir el template
                         var nuevaTarea = document.createElement('li')
 
@@ -236,22 +246,22 @@ function accionesTareas(e) {
             confirmButtonText: 'Si, borrar!',
             cancelButtonText: 'Cancelar'
 
-          }).then((result) => {
-              if (result.value) {
-                  var tareaEliminar = e.target.parentElement.parentElement;
-                  //borrar de la BD
-
-                  //Borrar del HTML
-                  tareaEliminar.remove();
-              }
-            if (result.isConfirmed) {
-              Swal.fire(
-                'Eliminado!',
-                'La tarea fue eliminada correctamente.',
-                'success'
-              )
+        }).then((result) => {
+            if (result.value) {
+                var tareaEliminar = e.target.parentElement.parentElement;
+                //borrar de la BD
+                eliminarTareaBD(tareaEliminar);
+                //Borrar del HTML
+                tareaEliminar.remove();
             }
-          })
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Eliminado!',
+                    'La tarea fue eliminada correctamente.',
+                    'success'
+                )
+            }
+        })
     }
 }
 // completa o descompleta la tarea
@@ -273,6 +283,31 @@ function cambiarEstadoTarea(tarea, estado) {
         if (this.status === 200) {
             console.log(JSON.parse(xhr.responseText));
 
+        }
+    }
+    //enviar la peticion
+    xhr.send(datos);
+}
+//eliminar las tareas de la base de datos
+function eliminarTareaBD(tarea) {
+    var idTarea = tarea.id.split(":")
+    //crear llamado a ajax
+    var xhr = new XMLHttpRequest();
+    //informacion
+    var datos = new FormData();
+    datos.append("id", idTarea[1]);
+    datos.append("accion", "eliminar");
+    //abrir la conexion
+    xhr.open("POST", "inc/modelos/modelo-tareas.php", true);
+    // on load
+    xhr.onload = function () {
+        if (this.status === 200) {
+            console.log(JSON.parse(xhr.responseText));
+            //comprobar que haya tareas restantes
+            var listasTareasRestantes = document.querySelectorAll("li.tarea");
+            if (listasTareasRestantes.length === 0) {
+                document.querySelector(".listado-pendientes ul").innerHTML = "<p class = 'lista-vacia'> No hay tareas en este proyecto </p>"
+            }
         }
     }
     //enviar la peticion

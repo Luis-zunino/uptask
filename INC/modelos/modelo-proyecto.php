@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL ^ E_NOTICE);
+
 $accion = $_POST["accion"];
 $proyecto = $_POST["proyecto"];
 

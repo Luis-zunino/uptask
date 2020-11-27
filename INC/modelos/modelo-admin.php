@@ -13,6 +13,8 @@ un formato intermedio entre javascript y php que se comunican bien ambos,
 
 /**die(json_encode($_POST)); es la forma recomendada de asegurarte de que tus 
 datos del formdata estan siendo recibidos en tus archivos de php */
+error_reporting(E_ALL ^ E_NOTICE);
+
 $accion = $_POST['accion'];
 $password = $_POST['password'];
 $usuario = $_POST['usuario'];

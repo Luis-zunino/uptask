@@ -28,7 +28,7 @@ function obtenerNombreProyecto($id = null){
     include "coneccion.php";
 
     try {
-    return $conn->query("SELECT nombre FROM proyectos WHERE id = {$id}");
+    return $conn->query("SELECT nombre FROM proyectos WHERE id = '{$id}'");
     } catch (Exception $e) {
         echo "Error! : " . $e->getMessage();
         return false;
