@@ -50,7 +50,7 @@ if (isset($_GET['id_proyecto'])) {
             <ul>
                 <?php
                 //obtnene las tareas del proycto actual
-                $tareas = obtenerTareasProyecto($id_proyecto);
+                $tareas = obtenerTareasProyecto($id_proyecto = null);
                 if ($tareas->num_rows > 0) {
                     // si hay tareas
                     foreach ($tareas as $tarea) : ?>
